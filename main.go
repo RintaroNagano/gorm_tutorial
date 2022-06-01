@@ -28,7 +28,7 @@ func gormConnect() *gorm.DB {
 	PROTOCOL := os.Getenv("PROTOCOL")
 	DBNAME := os.Getenv("DB_NAME")
 
-	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME
+	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?parseTime=true"
 	db, err := gorm.Open(DBMS, CONNECT)
 
 	if err != nil {
@@ -49,10 +49,10 @@ func main() {
 
 	// // Read
 	var product Product
-	first_row := db.First(&product, 1) // find product with integer primary key
-	fmt.Println(first_row)
-	first_row = db.First(&product, "code = ?", "D42") // find product with code D42
-	fmt.Println(first_row)
+	db.First(&product, 1) // find product with integer primary key
+	fmt.Println(product)
+	db.First(&product, "code = ?", "F42") // find product with code D42
+	fmt.Println(product)
 
 	// Update - update product's price to 200
 	db.Model(&product).Update("Price", 200)
